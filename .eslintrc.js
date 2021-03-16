@@ -20,10 +20,12 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
-    'no-unused-vars': ['warn'], // instead of default error
+    // https://github.com/typescript-eslint/typescript-eslint/issues/363
+    '@typescript-eslint/no-unused-vars': 'off',
+    'no-unused-vars': 'off',
+    'no-debugger': 'warn', // instead of default error
     indent: ['warn', 2], // instead of default 4
   },
-  // fix: 'module' is not defined
   env: {
     browser: true,
     es6: true,

@@ -5,13 +5,14 @@ import ICoinListItem from '../types/ICoinListItem';
 
 interface Props {
   coin: ICoinListItem;
+  showDetails: (coin: ICoinListItem) => void;
 }
 
 export default function CoinListItem(props: Props): ReactElement {
   const coin = props.coin;
 
   return (
-    <Table.Row>
+    <Table.Row onClick={() => props.showDetails(coin)}>
       <Table.Cell>{coin.market_cap_rank}</Table.Cell>
       <Table.Cell>
         <List verticalAlign="middle">

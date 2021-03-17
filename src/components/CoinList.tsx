@@ -1,12 +1,17 @@
 import React, { ReactElement } from 'react';
 import { Table } from 'semantic-ui-react';
 
+import ICoinListItem from '../types/ICoinListItem';
 import { coins } from '../shared/coins';
 import CoinListItem from './CoinListItem';
 
-export default function CoinList(): ReactElement {
+interface Props {
+  showDetails: (coin: ICoinListItem) => void;
+}
+
+export default function CoinList(props: Props): ReactElement {
   return (
-    <Table basic="very" singleLine>
+    <Table basic="very" singleLine selectable>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>#</Table.HeaderCell>
@@ -21,7 +26,11 @@ export default function CoinList(): ReactElement {
       </Table.Header>
       <Table.Body>
         {coins.map((coin) => (
-          <CoinListItem key={coin.id} coin={coin} />
+          <CoinListItem
+            key={coin.id}
+            coin={coin}
+            showDetails={props.showDetails}
+          />
         ))}
       </Table.Body>
     </Table>

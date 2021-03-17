@@ -1,9 +1,11 @@
 import React, { ReactElement } from 'react';
 
+import CoinList from './CoinList';
+
 export default function App(): ReactElement {
   return (
-    <div className="ui active inverted dimmer">
-      <div className="ui text loader large">Loading...</div>
+    <div className="ui container">
+      <CoinList />
     </div>
   );
 }

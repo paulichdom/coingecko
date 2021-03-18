@@ -1,15 +1,31 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
 import { Table } from 'semantic-ui-react';
 
 import ICoinListItem from '../types/ICoinListItem';
-import { coins } from '../shared/coins';
 import CoinListItem from './CoinListItem';
+import LoadingSpinner from './LoadingSpinner';
 
 interface Props {
   showDetails: (coin: ICoinListItem) => void;
 }
 
 export default function CoinList(props: Props): ReactElement {
+  const [coins, setCoins] = useState<ICoinListItem[]>();
+
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: `https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y`,
+    }).then((response: AxiosResponse<ICoinListItem[]>) =>
+      setCoins(response.data)
+    );
+  }, []);
+
+  if (!coins) {
+    return <LoadingSpinner name="coins" />;
+  }
+
   return (
     <Table basic="very" singleLine selectable>
       <Table.Header>

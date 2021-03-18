@@ -1,4 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+
 import {
   Grid,
   List,
@@ -9,6 +11,8 @@ import {
 } from 'semantic-ui-react';
 
 import ICoinListItem from '../types/ICoinListItem';
+import ICoinDetails from '../types/ICoinDetails';
+import LoadingSpinner from './LoadingSpinner';
 
 interface Props {
   coin: ICoinListItem;
@@ -16,7 +20,19 @@ interface Props {
 }
 
 export default function CoinDetails(props: Props): ReactElement {
-  const coin = props.coin;
+  // const coin = props.coin;
+  const [coin, setCoin] = useState<ICoinDetails>();
+
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: `https://api.coingecko.com/api/v3/coins/${props.coin.id}`,
+    }).then((response: AxiosResponse<ICoinDetails>) => setCoin(response.data));
+  }, [props.coin.id]);
+
+  if (!coin) {
+    return <LoadingSpinner name="coin" />;
+  }
 
   return (
     <>
@@ -25,7 +41,7 @@ export default function CoinDetails(props: Props): ReactElement {
           <Grid.Column>
             <List verticalAlign="middle">
               <List.Item>
-                <Image avatar src={coin.image} />
+                <Image avatar src={coin.image.large} />
                 <List.Content>
                   <List.Header>
                     {coin.name}{' '}
@@ -38,19 +54,19 @@ export default function CoinDetails(props: Props): ReactElement {
             </List>
           </Grid.Column>
           <GridColumn textAlign="right">
-            <h3>{coin.current_price}</h3>
+            <h3>{coin.market_data.current_price.eur}</h3>
           </GridColumn>
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column textAlign="right">
             <p className="bold">Market cap</p>
-            {coin.market_cap}
+            {coin.market_data.market_cap.eur}
             <p className="bold">24h High</p>
-            {coin.high_24h}
+            {coin.market_data.high_24h.eur}
           </Grid.Column>
           <Grid.Column textAlign="right">
             <p className="bold">Circulating Supply</p>
-            {coin.circulating_supply}
+            {coin.market_data.circulating_supply}
           </Grid.Column>
         </Grid.Row>
       </Grid>

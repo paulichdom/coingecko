@@ -33,7 +33,7 @@ export default function CoinListItem(props: Props): ReactElement {
       <Table.Cell>{coin.price_change_percentage_1h_in_currency} %</Table.Cell>
       <Table.Cell>{coin.price_change_percentage_24h_in_currency} %</Table.Cell>
       <Table.Cell>{coin.price_change_percentage_7d_in_currency} %</Table.Cell>
-      <Table.Cell>{coin.market_cap_change_24h}</Table.Cell>
+      <Table.Cell>{coin.total_volume}</Table.Cell>
       <Table.Cell>{coin.market_cap}</Table.Cell>
     </Table.Row>
   );

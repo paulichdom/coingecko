@@ -7,16 +7,12 @@ import ICoinListItem from '../types/ICoinListItem';
 import CoinListItem from './CoinListItem';
 import LoadingSpinner from './LoadingSpinner';
 
-interface Props {
-  showDetails: (coin: ICoinListItem) => void;
-}
-
-export default function CoinList(props: Props): ReactElement {
-  const coinsURL = coinListURL('coins/markets', 'eur', 10, 1).href;
+export default function CoinList(): ReactElement {
+  const coinsURL = coinListURL('coins/markets', 'eur', 20, 1).href;
   const [coins] = useCoinApi<ICoinListItem[]>('GET', coinsURL);
 
   if (!coins) {
-    return <LoadingSpinner name="coins" />;
+    return <LoadingSpinner name="Coins" />;
   }
 
   return (
@@ -38,7 +34,6 @@ export default function CoinList(props: Props): ReactElement {
           <CoinListItem
             key={coin.id}
             coin={coin}
-            showDetails={props.showDetails}
           />
         ))}
       </Table.Body>

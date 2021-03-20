@@ -5,9 +5,9 @@ export function coinListURL(
   page: number
 ): URL {
   // create base URL
-  const baseUrl = new URL('https://api.coingecko.com/api/v3');
-  // append path to the base URL
-  baseUrl.href += `/${path}`;
+  const baseUrl = new URL('https://api.coingecko.com');
+  // append path to the base URL pathname
+  baseUrl.pathname += `/api/v3/${path}`;
   // append search parameters
   baseUrl.searchParams.append('vs_currency', currency);
   baseUrl.searchParams.append('order', 'market_cap_desc');
@@ -22,7 +22,7 @@ export function coinListURL(
 }
 
 export function coinDetailURL(path: string, coinId: string): URL {
-  const baseUrl = new URL('https://api.coingecko.com/api/v3');
-  baseUrl.href += `/${path}/${coinId}`;
+  const baseUrl = new URL('https://api.coingecko.com');
+  baseUrl.pathname += `/api/v3/${path}/${coinId}`;
   return baseUrl;
 }

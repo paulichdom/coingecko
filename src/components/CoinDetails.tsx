@@ -11,21 +11,23 @@ import {
   GridColumn,
 } from 'semantic-ui-react';
 
-import ICoinListItem from '../types/ICoinListItem';
 import ICoinDetails from '../types/ICoinDetails';
 import LoadingSpinner from './LoadingSpinner';
+import { useHistory, useParams } from 'react-router-dom';
 
-interface Props {
-  coin: ICoinListItem;
-  showList: () => void;
-}
-
-export default function CoinDetails(props: Props): ReactElement {
-  const coinURL = coinDetailURL('coins', props.coin.id).href;
+export default function CoinDetails(): ReactElement {
+  const { coinId } = useParams<{ coinId: string }>();
+  const coinURL = coinDetailURL('coins', coinId).href;
   const coin = useCoinApi<ICoinDetails>('GET', coinURL)[0];
+  
+  const history = useHistory();
+
+  const onGoToList = () => {
+    history.push('/coins');
+  };
 
   if (!coin) {
-    return <LoadingSpinner name="coin" />;
+    return <LoadingSpinner name={coinId.toUpperCase()} />;
   }
 
   return (
@@ -65,7 +67,7 @@ export default function CoinDetails(props: Props): ReactElement {
         </Grid.Row>
       </Grid>
       <Divider />
-      <Button content="Back" onClick={props.showList} />
+      <Button content="Back" onClick={onGoToList} />
     </>
   );
 }

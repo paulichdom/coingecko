@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosResponse, Method } from 'axios';
-import { url } from 'node:inspector';
 
 type Setter<T> = (data: T) => void;
 
@@ -22,11 +21,9 @@ export function coinApi<T>(
   callback: Setter<T>,
   data = {}
 ): void {
-  // const baseUrl = 'https://api.coingecko.com/api/v3';
-
   axios({
     method: method,
-    url: url, // `${baseUrl}/${path}`,
+    url: url,
     data,
   }).then((response: AxiosResponse<T>) => callback(response.data));
 }

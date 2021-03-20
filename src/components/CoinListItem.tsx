@@ -1,18 +1,23 @@
 import React, { ReactElement } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Table, List, Image } from 'semantic-ui-react';
 
 import ICoinListItem from '../types/ICoinListItem';
 
 interface Props {
   coin: ICoinListItem;
-  showDetails: (coin: ICoinListItem) => void;
 }
 
 export default function CoinListItem(props: Props): ReactElement {
   const coin = props.coin;
+  const history = useHistory();
+
+  const onGoToDetail = () => {
+    history.push(`/coins/${coin.id}`);
+  };
 
   return (
-    <Table.Row onClick={() => props.showDetails(coin)}>
+    <Table.Row onClick={onGoToDetail}>
       <Table.Cell>{coin.market_cap_rank}</Table.Cell>
       <Table.Cell>
         <List verticalAlign="middle">

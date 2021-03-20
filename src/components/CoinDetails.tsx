@@ -1,6 +1,6 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import React, { ReactElement } from 'react';
 import { useCoinApi } from '../shared/CoinApi';
+import { coinDetailURL } from '../shared/URLBuilder';
 
 import {
   Grid,
@@ -21,8 +21,9 @@ interface Props {
 }
 
 export default function CoinDetails(props: Props): ReactElement {
-  const coin = useCoinApi<ICoinDetails>('GET', `coins/${props.coin.id}`)[0];
- 
+  const coinURL = coinDetailURL('coins', props.coin.id).href;
+  const coin = useCoinApi<ICoinDetails>('GET', coinURL)[0];
+
   if (!coin) {
     return <LoadingSpinner name="coin" />;
   }

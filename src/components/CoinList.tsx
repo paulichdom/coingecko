@@ -1,6 +1,6 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import React, { ReactElement } from 'react';
 import { useCoinApi } from '../shared/CoinApi';
+import { coinListURL } from '../shared/URLBuilder';
 import { Table } from 'semantic-ui-react';
 
 import ICoinListItem from '../types/ICoinListItem';
@@ -12,9 +12,8 @@ interface Props {
 }
 
 export default function CoinList(props: Props): ReactElement {
-  const coinListPath =
-    'coins/markets?vs_currency=eur&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y';
-  const [coins] = useCoinApi<ICoinListItem[]>('GET', coinListPath);
+  const coinsURL = coinListURL('coins/markets', 'eur', 10, 1).href;
+  const [coins] = useCoinApi<ICoinListItem[]>('GET', coinsURL);
 
   if (!coins) {
     return <LoadingSpinner name="coins" />;

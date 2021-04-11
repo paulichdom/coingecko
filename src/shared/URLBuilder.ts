@@ -7,12 +7,12 @@ export function coinListURL(
   // create base URL
   const baseUrl = new URL('https://api.coingecko.com');
   // append path to the base URL pathname
-  baseUrl.pathname += `/api/v3/${path}`;
+  baseUrl.pathname += `api/v3/${path}`;
   // append search parameters
   baseUrl.searchParams.append('vs_currency', currency);
   baseUrl.searchParams.append('order', 'market_cap_desc');
-  baseUrl.searchParams.append('per_page', perPage.toString());
-  baseUrl.searchParams.append('page', page.toString());
+  baseUrl.searchParams.append('per_page', perPage + '');
+  baseUrl.searchParams.append('page', page + '');
   baseUrl.searchParams.append('sparkline', 'true');
 
   baseUrl.href +=

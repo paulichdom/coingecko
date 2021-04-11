@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { Header, Icon } from 'semantic-ui-react';
+import CoinSearch from './CoinSearch';
 
 export default function Home(): ReactElement {
   return (
@@ -15,6 +16,7 @@ export default function Home(): ReactElement {
       <Link className="ui yellow button" to="/coins">
         Go to coin List
       </Link>
+      <CoinSearch headline="Coin Search" />
     </>
   );
 }

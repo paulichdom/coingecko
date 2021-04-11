@@ -9,6 +9,8 @@ import LoadingSpinner from './LoadingSpinner';
 
 export default function CoinList(): ReactElement {
   const coinsURL = coinListURL('coins/markets', 'eur', 20, 1).href;
+  console.log(coinsURL);
+  
   const [coins] = useCoinApi<ICoinListItem[]>('GET', coinsURL);
 
   if (!coins) {

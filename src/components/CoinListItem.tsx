@@ -6,11 +6,17 @@ import ICoinListItem from '../types/ICoinListItem';
 
 interface Props {
   coin: ICoinListItem;
+  currency: string;
 }
 
 export default function CoinListItem(props: Props): ReactElement {
   const coin = props.coin;
   const history = useHistory();
+
+  const formatCurrency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: props.currency,
+  });
 
   const onGoToDetail = () => {
     history.push(`/coins/${coin.id}`);
@@ -34,12 +40,18 @@ export default function CoinListItem(props: Props): ReactElement {
           </List.Item>
         </List>
       </Table.Cell>
-      <Table.Cell>{coin.current_price}</Table.Cell>
-      <Table.Cell>{coin.price_change_percentage_1h_in_currency} %</Table.Cell>
-      <Table.Cell>{coin.price_change_percentage_24h_in_currency} %</Table.Cell>
-      <Table.Cell>{coin.price_change_percentage_7d_in_currency} %</Table.Cell>
-      <Table.Cell>{coin.total_volume}</Table.Cell>
-      <Table.Cell>{coin.market_cap}</Table.Cell>
+      <Table.Cell>{formatCurrency.format(coin.current_price)}</Table.Cell>
+      <Table.Cell>
+        {coin.price_change_percentage_1h_in_currency.toFixed(1)} %
+      </Table.Cell>
+      <Table.Cell>
+        {coin.price_change_percentage_24h_in_currency.toFixed(1)} %
+      </Table.Cell>
+      <Table.Cell>
+        {coin.price_change_percentage_7d_in_currency.toFixed(1)} %
+      </Table.Cell>
+      <Table.Cell>{formatCurrency.format(coin.total_volume)}</Table.Cell>
+      <Table.Cell>{formatCurrency.format(coin.market_cap)}</Table.Cell>
     </Table.Row>
   );
 }

@@ -9,7 +9,7 @@ interface Props {
 export default function Layout(props: Props): ReactElement {
   return (
     <Router>
-      <Menu className="ui attached stackable menu" inverted>
+      <Menu className="ui attached stackable menu" color="teal" inverted>
         <NavLink to="/home" className="item" activeClassName="active">
           <Icon name="home" />
           Home

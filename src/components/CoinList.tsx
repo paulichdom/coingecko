@@ -1,7 +1,16 @@
 import React, { ReactElement, SyntheticEvent, useState } from 'react';
 import { useCoinApi } from '../shared/CoinApi';
 import { coinListURL } from '../shared/URLBuilder';
-import { Dropdown, DropdownProps, Menu, Table } from 'semantic-ui-react';
+import {
+  Container,
+  Dropdown,
+  DropdownProps,
+  Grid,
+  GridColumn,
+  Pagination,
+  PaginationProps,
+  Table,
+} from 'semantic-ui-react';
 
 import ICoinListItem from '../types/ICoinListItem';
 import CoinListItem from './CoinListItem';
@@ -11,23 +20,43 @@ import { CurrencyOptions } from '../shared/CurrencyOptions';
 
 export default function CoinList(): ReactElement {
   const [currency, setCurrency] = useState(Currencies.EUR.code);
-  const coinsURL = coinListURL('coins/markets', currency, 20, 1).href;
-  console.log(coinsURL);
+  const [perPage, setPerPage] = useState(15);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const coinsURL = coinListURL('coins/markets', currency, perPage, currentPage)
+    .href;
   const [coins] = useCoinApi<ICoinListItem[]>('GET', coinsURL);
 
   if (!coins) {
     return <LoadingSpinner name="Coins" />;
   }
 
+  // handle pagination
+  const onPageChange = (e: SyntheticEvent, pageInfo: PaginationProps) => {
+    if (pageInfo.activePage) setCurrentPage(+pageInfo.activePage);
+  };
+
+  // handle results per page
+  const onPerPageChange = (e: SyntheticEvent, info: DropdownProps) => {
+    if (info.value) setPerPage(+info.value);
+  };
+
+  // handle pagination options
+  const pageOptions = [
+    { text: '15', value: 15 },
+    { text: '30', value: 30 },
+    { text: '50', value: 50 },
+  ];
+
+  // handle currency option
   const onChangeCurrency = (e: SyntheticEvent, info: DropdownProps) => {
     if (info.value) setCurrency(info.value.toString());
   };
 
   return (
     <>
-      <Menu secondary>
-        <Menu.Item>
+      <Grid columns={2}>
+        <GridColumn>
           <Dropdown
             onChange={onChangeCurrency}
             button
@@ -38,8 +67,20 @@ export default function CoinList(): ReactElement {
             search
             text={currency}
           />
-        </Menu.Item>
-      </Menu>
+        </GridColumn>
+        <GridColumn textAlign="right">
+          <span>
+            <strong>Show rows &nbsp;</strong>
+          </span>
+          <Dropdown
+            options={pageOptions}
+            onChange={onPerPageChange}
+            placeholder={perPage.toString()}
+            compact
+            selection
+          ></Dropdown>
+        </GridColumn>
+      </Grid>
       <Table basic="very" singleLine selectable>
         <Table.Header>
           <Table.Row>
@@ -59,6 +100,14 @@ export default function CoinList(): ReactElement {
           ))}
         </Table.Body>
       </Table>
+      <Container className="ui center aligned container">
+        <Pagination
+          onPageChange={onPageChange}
+          activePage={currentPage}
+          siblingRange={2}
+          totalPages={25}
+        ></Pagination>
+      </Container>
     </>
   );
 }

@@ -10,16 +10,13 @@ interface IProps {
 }
 
 export default function Watchlist(props: IProps): JSX.Element {
-  console.log(props.watchlist);
-
+  
   const coins = props.watchlist
     .reduce((acc: ICoinListItem[], coin) => {
       acc.find((coin_) => coin_.id === coin.id) || acc.push(coin);
       return acc;
     }, [])
     .sort((coinA, coinB) => Number(coinA.id) - Number(coinB.id));
-
-  console.log(coins);
 
   return (
     <Table basic="very" singleLine selectable>

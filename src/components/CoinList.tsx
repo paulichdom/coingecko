@@ -25,6 +25,7 @@ import { Link } from 'react-router-dom';
 
 interface Props {
   dispatch: Dispatch;
+  watchlist: ICoinListItem[];
 }
 
 export default function CoinList(props: Props): ReactElement {
@@ -119,6 +120,7 @@ export default function CoinList(props: Props): ReactElement {
               coin={coin}
               currency={currency}
               dispatch={props.dispatch}
+              watchlist={props.watchlist}
             />
           ))}
         </Table.Body>

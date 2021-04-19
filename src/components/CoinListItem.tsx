@@ -9,14 +9,18 @@ interface Props {
   coin: ICoinListItem;
   currency: string;
   dispatch: Dispatch;
+  watchlist: ICoinListItem[];
 }
 
 export default function CoinListItem(props: Props): ReactElement {
   const coin = props.coin;
   const coinListItem = props.coin;
   const history = useHistory();
-
-  const [iconName, setIconName] = useState('star outline');
+  
+  const watchlistItem = props.watchlist.find((coin_) => coin_.id === coin.id);
+  const iconState = watchlistItem?.id === coin.id ? 'star icon yellow' : 'star outline'
+  
+  const [iconName, setIconName] = useState(iconState);
 
   const formatCurrency = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -39,6 +43,7 @@ export default function CoinListItem(props: Props): ReactElement {
       props.dispatch({ type: 'addToWatchlist', coinListItem });
       setIconName('star icon yellow');
     } else {
+      props.dispatch({ type: 'removeFromWatchlist', coinListItem });
       setIconName('star outline icon yellow');
     }
   };
@@ -56,7 +61,11 @@ export default function CoinListItem(props: Props): ReactElement {
     <Table.Row className="enlarge">
       <Table.Cell textAlign="center">
         <Popup
-          content="Add to Main Watchlist"
+          content={
+            iconName !== 'star icon yellow'
+              ? 'Add to Watchlist'
+              : 'Remove from Watchlist'
+          }
           position="top center"
           size="small"
           inverted

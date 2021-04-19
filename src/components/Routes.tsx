@@ -3,13 +3,11 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import CoinDetails from './CoinDetails';
 import CoinList from './CoinList';
 import Home from './Home';
-import {reducer} from '../Store';
+import { reducer } from '../Store';
 import Watchlist from './Watchlist';
 
 export default function Routes(): ReactElement {
-  const [store, dispatch] = useReducer(reducer, {watchlist: []})
-  console.log(store.watchlist);
-  
+  const [store, dispatch] = useReducer(reducer, { watchlist: [] });
 
   return (
     <Switch>
@@ -17,10 +15,10 @@ export default function Routes(): ReactElement {
         <CoinDetails />
       </Route>
       <Route path="/coins">
-        <CoinList dispatch={dispatch}/>
+        <CoinList dispatch={dispatch} watchlist={store.watchlist} />
       </Route>
       <Route path="/watchlist">
-        <Watchlist watchlist={store.watchlist} dispatch={dispatch}/>
+        <Watchlist watchlist={store.watchlist} dispatch={dispatch} />
       </Route>
       <Route path="/home">
         <Home />

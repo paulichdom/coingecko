@@ -1,16 +1,19 @@
 import React, { ReactElement, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Table, List, Image, Icon, Container, Popup } from 'semantic-ui-react';
+import { Table, List, Image, Icon, Popup } from 'semantic-ui-react';
+import { Dispatch } from '../Store';
 
 import ICoinListItem from '../types/ICoinListItem';
 
 interface Props {
   coin: ICoinListItem;
   currency: string;
+  dispatch: Dispatch;
 }
 
 export default function CoinListItem(props: Props): ReactElement {
   const coin = props.coin;
+  const coinListItem = props.coin;
   const history = useHistory();
 
   const [iconName, setIconName] = useState('star outline');
@@ -33,6 +36,7 @@ export default function CoinListItem(props: Props): ReactElement {
   // handle events
   const addToWatchlist = () => {
     if (iconName !== 'star icon yellow') {
+      props.dispatch({ type: 'addToWatchlist', coinListItem });
       setIconName('star icon yellow');
     } else {
       setIconName('star outline icon yellow');
@@ -40,7 +44,8 @@ export default function CoinListItem(props: Props): ReactElement {
   };
 
   const onMouseEnter = () => {
-    if (iconName !== 'star icon yellow') setIconName('star outline icon yellow');
+    if (iconName !== 'star icon yellow')
+      setIconName('star outline icon yellow');
   };
 
   const onMouseLeave = () => {
@@ -79,10 +84,10 @@ export default function CoinListItem(props: Props): ReactElement {
           </List.Item>
         </List>
       </Table.Cell>
-      <Table.Cell className="bold">
+      <Table.Cell className="bold" textAlign="right">
         {formatCurrency.format(coin.current_price)}
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell textAlign="right">
         <div
           id={coin.price_change_percentage_1h_in_currency > 0 ? 'green' : 'red'}
           className="bold"
@@ -98,7 +103,7 @@ export default function CoinListItem(props: Props): ReactElement {
           %
         </div>
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell textAlign="right">
         <div
           id={
             coin.price_change_percentage_24h_in_currency > 0 ? 'green' : 'red'
@@ -116,7 +121,7 @@ export default function CoinListItem(props: Props): ReactElement {
           %
         </div>
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell textAlign="right">
         <div
           id={coin.price_change_percentage_7d_in_currency > 0 ? 'green' : 'red'}
           className="bold"
@@ -132,10 +137,10 @@ export default function CoinListItem(props: Props): ReactElement {
           %
         </div>
       </Table.Cell>
-      <Table.Cell className="bold">
+      <Table.Cell className="bold" textAlign="right">
         {formatCurrencyDigits.format(coin.total_volume)}
       </Table.Cell>
-      <Table.Cell className="bold">
+      <Table.Cell className="bold" textAlign="right">
         {formatCurrencyDigits.format(coin.market_cap)}
       </Table.Cell>
     </Table.Row>

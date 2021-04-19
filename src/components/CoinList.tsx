@@ -20,8 +20,14 @@ import CoinListItem from './CoinListItem';
 import LoadingSpinner from './LoadingSpinner';
 import { Currencies } from '../shared/Currencies';
 import { CurrencyOptions } from '../shared/CurrencyOptions';
+import { Dispatch } from '../Store';
+import { Link } from 'react-router-dom';
 
-export default function CoinList(): ReactElement {
+interface Props {
+  dispatch: Dispatch;
+}
+
+export default function CoinList(props: Props): ReactElement {
   const [currency, setCurrency] = useState(Currencies.EUR.code);
   const [perPage, setPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -70,10 +76,12 @@ export default function CoinList(): ReactElement {
             search
             text={currency}
           />
-          <Button icon labelPosition="left">
-            <Icon name="star outline" />
-            Watchlist
-          </Button>
+          <Link to="/watchlist">
+            <Button icon labelPosition="left">
+              <Icon name="star outline" />
+              Watchlist
+            </Button>
+          </Link>
         </GridColumn>
         <GridColumn textAlign="right">
           <span>
@@ -96,17 +104,22 @@ export default function CoinList(): ReactElement {
               #
             </Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Price</Table.HeaderCell>
-            <Table.HeaderCell>1h %</Table.HeaderCell>
-            <Table.HeaderCell>24h %</Table.HeaderCell>
-            <Table.HeaderCell>7d %</Table.HeaderCell>
-            <Table.HeaderCell>Volume (24h)</Table.HeaderCell>
-            <Table.HeaderCell>Market Cap</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">Price</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">1h %</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">24h %</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">7d %</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">Volume (24h)</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">Market Cap</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {coins.map((coin) => (
-            <CoinListItem key={coin.id} coin={coin} currency={currency} />
+            <CoinListItem
+              key={coin.id}
+              coin={coin}
+              currency={currency}
+              dispatch={props.dispatch}
+            />
           ))}
         </Table.Body>
       </Table>

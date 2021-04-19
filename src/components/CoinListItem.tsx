@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Table, List, Image, Icon, Container } from 'semantic-ui-react';
+import { Table, List, Image, Icon, Container, Popup } from 'semantic-ui-react';
 
 import ICoinListItem from '../types/ICoinListItem';
 
@@ -12,6 +12,8 @@ interface Props {
 export default function CoinListItem(props: Props): ReactElement {
   const coin = props.coin;
   const history = useHistory();
+
+  const [iconName, setIconName] = useState('star outline');
 
   const formatCurrency = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -28,12 +30,46 @@ export default function CoinListItem(props: Props): ReactElement {
     history.push(`/coins/${coin.id}`);
   };
 
+  // handle events
+  const addToWatchlist = () => {
+    if (iconName !== 'star icon yellow') {
+      setIconName('star icon yellow');
+    } else {
+      setIconName('star outline icon yellow');
+    }
+  };
+
+  const onMouseEnter = () => {
+    if (iconName !== 'star icon yellow') setIconName('star outline icon yellow');
+  };
+
+  const onMouseLeave = () => {
+    if (iconName !== 'star icon yellow') setIconName('star outline icon grey');
+  };
+
   return (
-    <Table.Row onClick={onGoToDetail}>
+    <Table.Row className="enlarge">
+      <Table.Cell textAlign="center">
+        <Popup
+          content="Add to Main Watchlist"
+          position="top center"
+          size="small"
+          inverted
+          trigger={
+            <Icon
+              style={{ cursor: 'pointer' }}
+              onClick={addToWatchlist}
+              onMouseLeave={onMouseLeave}
+              onMouseEnter={onMouseEnter}
+              className={iconName}
+            ></Icon>
+          }
+        />
+      </Table.Cell>
       <Table.Cell>{coin.market_cap_rank}</Table.Cell>
       <Table.Cell>
         <List verticalAlign="middle">
-          <List.Item>
+          <List.Item onClick={onGoToDetail} style={{ cursor: 'pointer' }}>
             <Image avatar src={coin.image} />
             <List.Content>
               <List.Header>

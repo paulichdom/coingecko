@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
-import { Container, Icon, Menu } from 'semantic-ui-react';
+import { Container, Icon, Menu, Image } from 'semantic-ui-react';
 
 interface Props {
   children: ReactElement;

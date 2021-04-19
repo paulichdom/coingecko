@@ -2,11 +2,14 @@ import React, { ReactElement, SyntheticEvent, useState } from 'react';
 import { useCoinApi } from '../shared/CoinApi';
 import { coinListURL } from '../shared/URLBuilder';
 import {
+  Button,
   Container,
+  Divider,
   Dropdown,
   DropdownProps,
   Grid,
   GridColumn,
+  Icon,
   Pagination,
   PaginationProps,
   Table,
@@ -67,6 +70,10 @@ export default function CoinList(): ReactElement {
             search
             text={currency}
           />
+          <Button icon labelPosition="left">
+            <Icon name="star outline" />
+            Watchlist
+          </Button>
         </GridColumn>
         <GridColumn textAlign="right">
           <span>
@@ -81,10 +88,13 @@ export default function CoinList(): ReactElement {
           ></Dropdown>
         </GridColumn>
       </Grid>
+      <Divider />
       <Table basic="very" singleLine selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>#</Table.HeaderCell>
+            <Table.HeaderCell colSpan="2" textAlign="center">
+              #
+            </Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Price</Table.HeaderCell>
             <Table.HeaderCell>1h %</Table.HeaderCell>

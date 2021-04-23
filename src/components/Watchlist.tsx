@@ -1,17 +1,13 @@
 import React from 'react';
 import ICoinListItem from '../types/ICoinListItem';
-import { Dispatch } from '../Store';
+import { useStore } from '../Store';
 import { Table } from 'semantic-ui-react';
 import WatchlistItem from './WatchlistItem';
 
-interface IProps {
-  dispatch: Dispatch;
-  watchlist: ICoinListItem[];
-}
-
-export default function Watchlist(props: IProps): JSX.Element {
+export default function Watchlist(): JSX.Element {
+  const {store} = useStore()
   
-  const coins = props.watchlist
+  const coins = store.watchlist
     .reduce((acc: ICoinListItem[], coin) => {
       acc.find((coin_) => coin_.id === coin.id) || acc.push(coin);
       return acc;
@@ -37,7 +33,6 @@ export default function Watchlist(props: IProps): JSX.Element {
           <WatchlistItem
             key={coin.id}
             coinListItem={coin}
-            dispatch={props.dispatch}
           />
         ))}
       </Table.Body>

@@ -1,25 +1,24 @@
 import React, { ReactElement, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table, List, Image, Icon, Popup } from 'semantic-ui-react';
-import { Dispatch } from '../Store';
+import { useStore } from '../Store';
 
 import ICoinListItem from '../types/ICoinListItem';
 
 interface Props {
   coin: ICoinListItem;
   currency: string;
-  dispatch: Dispatch;
-  watchlist: ICoinListItem[];
 }
 
 export default function CoinListItem(props: Props): ReactElement {
+  const { store, dispatch } = useStore();
   const coin = props.coin;
   const coinListItem = props.coin;
   const history = useHistory();
-  
-  const watchlistItem = props.watchlist.find((coin_) => coin_.id === coin.id);
-  const iconState = watchlistItem?.id === coin.id ? 'star icon yellow' : 'star outline'
-  
+
+  const watchlistItem = store.watchlist.find((coin_) => coin_.id === coin.id);
+  const iconState = watchlistItem?.id === coin.id ? 'star icon yellow' : 'star outline';
+
   const [iconName, setIconName] = useState(iconState);
 
   const formatCurrency = new Intl.NumberFormat('en-US', {
@@ -40,10 +39,10 @@ export default function CoinListItem(props: Props): ReactElement {
   // handle events
   const addToWatchlist = () => {
     if (iconName !== 'star icon yellow') {
-      props.dispatch({ type: 'addToWatchlist', coinListItem });
+      dispatch({ type: 'addToWatchlist', coinListItem });
       setIconName('star icon yellow');
     } else {
-      props.dispatch({ type: 'removeFromWatchlist', coinListItem });
+      dispatch({ type: 'removeFromWatchlist', coinListItem });
       setIconName('star outline icon yellow');
     }
   };

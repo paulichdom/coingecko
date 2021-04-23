@@ -2,14 +2,14 @@ import React, { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, List, Table, Image } from 'semantic-ui-react';
 import ICoinListItem from '../types/ICoinListItem';
-import { Dispatch } from '../Store';
+import { useStore } from '../Store';
 
 interface Props {
   coinListItem: ICoinListItem;
-  dispatch: Dispatch;
 }
 
 export default function WatchlistItem(props: Props): ReactElement {
+  const { dispatch } = useStore();
   const coin = props.coinListItem;
   const coinListItem = props.coinListItem;
 
@@ -19,7 +19,7 @@ export default function WatchlistItem(props: Props): ReactElement {
   });
 
   const onRemoveFromWatchlist = () => {
-    props.dispatch({ type: 'removeFromWatchlist', coinListItem });
+    dispatch({ type: 'removeFromWatchlist', coinListItem });
   };
 
   return (

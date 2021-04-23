@@ -20,15 +20,10 @@ import CoinListItem from './CoinListItem';
 import LoadingSpinner from './LoadingSpinner';
 import { Currencies } from '../shared/Currencies';
 import { CurrencyOptions } from '../shared/CurrencyOptions';
-import { Dispatch } from '../Store';
 import { Link } from 'react-router-dom';
 
-interface Props {
-  dispatch: Dispatch;
-  watchlist: ICoinListItem[];
-}
 
-export default function CoinList(props: Props): ReactElement {
+export default function CoinList(): ReactElement {
   const [currency, setCurrency] = useState(Currencies.EUR.code);
   const [perPage, setPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
@@ -119,8 +114,6 @@ export default function CoinList(props: Props): ReactElement {
               key={coin.id}
               coin={coin}
               currency={currency}
-              dispatch={props.dispatch}
-              watchlist={props.watchlist}
             />
           ))}
         </Table.Body>

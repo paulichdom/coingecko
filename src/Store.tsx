@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { Dispatch as ReactDispatch } from 'react';
+import React, { createContext, Dispatch, useContext, useReducer } from 'react';
 import ICoinListItem from './types/ICoinListItem';
 
 export interface Store {
@@ -18,8 +18,6 @@ interface RemoveFromWatchlist {
 
 export type Actions = AddToWatchlist | RemoveFromWatchlist;
 
-export type Dispatch = ReactDispatch<Actions>;
-
 export const reducer = (state: Store, action: Actions): Store => {
   switch (action.type) {
     case 'addToWatchlist': {
@@ -27,6 +25,7 @@ export const reducer = (state: Store, action: Actions): Store => {
         ...state,
         watchlist: [...state.watchlist, action.coinListItem],
       };
+
       return j;
       break;
     }
@@ -48,3 +47,24 @@ export const reducer = (state: Store, action: Actions): Store => {
     }
   }
 };
+
+interface StoreContext {
+  store: Store;
+  dispatch: Dispatch<Actions>;
+}
+
+const StoreContext = createContext({} as StoreContext);
+
+export const useStore = (): StoreContext => useContext(StoreContext);
+
+export default function StoreProvider(props: {
+  children: JSX.Element;
+}): JSX.Element {
+  const [store, dispatch] = useReducer(reducer, { watchlist: [] });
+
+  return (
+    <StoreContext.Provider value={{ store, dispatch }}>
+      {props.children}
+    </StoreContext.Provider>
+  );
+}

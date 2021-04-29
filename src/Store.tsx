@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import React, { createContext, Dispatch, useContext, useReducer } from 'react';
+import { useLocalStorage } from './util/LocalStorage';
 import ICoinListItem from './types/ICoinListItem';
 
 export interface Store {
@@ -60,7 +61,8 @@ export const useStore = (): StoreContext => useContext(StoreContext);
 export default function StoreProvider(props: {
   children: JSX.Element;
 }): JSX.Element {
-  const [store, dispatch] = useReducer(reducer, { watchlist: [] });
+  const [watchlist] = useLocalStorage<ICoinListItem[]>('watchlist', []);
+  const [store, dispatch] = useReducer(reducer, { watchlist });
 
   return (
     <StoreContext.Provider value={{ store, dispatch }}>

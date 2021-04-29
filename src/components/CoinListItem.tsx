@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table, List, Image, Icon, Popup } from 'semantic-ui-react';
 import { useStore } from '../Store';
+import { useLocalStorage } from '../util/LocalStorage';
 
 import ICoinListItem from '../types/ICoinListItem';
 
@@ -17,7 +18,8 @@ export default function CoinListItem(props: Props): ReactElement {
   const history = useHistory();
 
   const watchlistItem = store.watchlist.find((coin_) => coin_.id === coin.id);
-  const iconState = watchlistItem?.id === coin.id ? 'star icon yellow' : 'star outline';
+  const iconState =
+    watchlistItem?.id === coin.id ? 'star icon yellow' : 'star outline';
 
   const [iconName, setIconName] = useState(iconState);
 
@@ -36,13 +38,25 @@ export default function CoinListItem(props: Props): ReactElement {
     history.push(`/coins/${coin.id}`);
   };
 
+  const setWatchlist = useLocalStorage<ICoinListItem[]>('watchlist', [])[1];
+  console.log(store.watchlist);
+
   // handle events
-  const addToWatchlist = () => {
+  const toggleWatchlist = () => {
     if (iconName !== 'star icon yellow') {
       dispatch({ type: 'addToWatchlist', coinListItem });
+      const newWatchlist = [...store.watchlist, coinListItem];
+      setWatchlist(newWatchlist);
       setIconName('star icon yellow');
     } else {
       dispatch({ type: 'removeFromWatchlist', coinListItem });
+     
+      const index = store.watchlist.indexOf(coinListItem);
+      const newWatchlist = store.watchlist.filter(
+        (coinListItem, index_) => index_ !== index
+      );
+      setWatchlist(newWatchlist);
+      
       setIconName('star outline icon yellow');
     }
   };
@@ -71,7 +85,7 @@ export default function CoinListItem(props: Props): ReactElement {
           trigger={
             <Icon
               style={{ cursor: 'pointer' }}
-              onClick={addToWatchlist}
+              onClick={toggleWatchlist}
               onMouseLeave={onMouseLeave}
               onMouseEnter={onMouseEnter}
               className={iconName}

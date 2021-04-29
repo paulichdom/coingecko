@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { Icon, List, Table, Image } from 'semantic-ui-react';
 import ICoinListItem from '../types/ICoinListItem';
 import { useStore } from '../Store';
+import { useLocalStorage } from '../util/LocalStorage';
 
 interface Props {
   coinListItem: ICoinListItem;
 }
 
 export default function WatchlistItem(props: Props): ReactElement {
-  const { dispatch } = useStore();
+  const { store, dispatch } = useStore();
   const coin = props.coinListItem;
   const coinListItem = props.coinListItem;
 
@@ -18,8 +19,16 @@ export default function WatchlistItem(props: Props): ReactElement {
     currency: 'Eur',
   });
 
+  // handle local storage
+  const [, setWatchlist] = useLocalStorage<ICoinListItem[]>('watchlist', []);
+
   const onRemoveFromWatchlist = () => {
     dispatch({ type: 'removeFromWatchlist', coinListItem });
+    const index = store.watchlist.indexOf(coinListItem);
+    const newWatchlist = store.watchlist.filter(
+      (coinListItem, index_) => index_ !== index
+    );
+    setWatchlist(newWatchlist);
   };
 
   return (

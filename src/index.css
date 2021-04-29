@@ -24,3 +24,17 @@ p {
   height: 75px;
 }
 
+#divide {
+  margin-bottom: 20px;
+}
+
+.m-right {
+  margin-right: 20px;
+}
+
+.ta-right {
+  text-align: right;
+}
+#ta-right {
+  text-align: right;
+}

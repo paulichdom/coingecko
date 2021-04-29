@@ -22,7 +22,6 @@ import { Currencies } from '../shared/Currencies';
 import { CurrencyOptions } from '../shared/CurrencyOptions';
 import { Link } from 'react-router-dom';
 
-
 export default function CoinList(): ReactElement {
   const [currency, setCurrency] = useState(Currencies.EUR.code);
   const [perPage, setPerPage] = useState(15);
@@ -110,11 +109,7 @@ export default function CoinList(): ReactElement {
         </Table.Header>
         <Table.Body>
           {coins.map((coin) => (
-            <CoinListItem
-              key={coin.id}
-              coin={coin}
-              currency={currency}
-            />
+            <CoinListItem key={coin.id} coin={coin} currency={currency} />
           ))}
         </Table.Body>
       </Table>

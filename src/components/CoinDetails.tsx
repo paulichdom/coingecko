@@ -13,11 +13,13 @@ import {
   Progress,
   Header,
   Icon,
+  Container,
 } from 'semantic-ui-react';
 
 import ICoinDetails from '../types/ICoinDetails';
 import LoadingSpinner from './LoadingSpinner';
 import { Link, useParams } from 'react-router-dom';
+import HistoryChart from './HistoryChart';
 
 export default function CoinDetails(): ReactElement {
   const { coinId } = useParams<{ coinId: string }>();
@@ -109,7 +111,7 @@ export default function CoinDetails(): ReactElement {
               <List.Item>
                 <Progress
                   total={
-                    coin.market_data.low_24h.eur + coin.market_data.high_24h.eur
+                    coin.market_data.high_24h.eur + coin.market_data.low_24h.eur
                   }
                   value={coin.market_data.current_price.eur}
                   size="small"
@@ -158,6 +160,9 @@ export default function CoinDetails(): ReactElement {
           {coin.name} Chart
         </Header>
       </Divider>
+      <Container>
+        <HistoryChart coinId={coinId} />
+      </Container>
     </>
   );
 }

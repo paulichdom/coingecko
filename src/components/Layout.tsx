@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
-import { Container, Icon, Menu } from 'semantic-ui-react';
+import { Container, Icon, Menu, Sticky } from 'semantic-ui-react';
 
 interface Props {
   children: ReactElement;
@@ -9,7 +9,12 @@ interface Props {
 export default function Layout(props: Props): ReactElement {
   return (
     <Router>
-      <Menu className="ui attached stackable menu " id="divide" color="teal" inverted>
+      <Menu
+        className="ui attached stackable menu "
+        id="divide"
+        color="teal"
+        inverted
+      >
         <NavLink to="/home" className="item" activeClassName="active">
           <Icon name="home" />
           Home

@@ -1,3 +1,17 @@
+export function coinHistoryURL(
+  path: string,
+  coinId: string,
+  days: number
+): URL {
+  const baseUrl = new URL('https://api.coingecko.com');
+  baseUrl.pathname += `/api/v3/${path}/${coinId}/market_chart`;
+
+  baseUrl.searchParams.append('vs_currency', 'eur');
+  baseUrl.searchParams.append('days', days + '');
+
+  return baseUrl;
+}
+
 export function coinListURL(
   path: string,
   currency: string,

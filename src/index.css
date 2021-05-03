@@ -38,3 +38,13 @@ p {
 #ta-right {
   text-align: right;
 }
+
+.btn {
+  background: transparent;
+  border-color: transparent;
+  text-transform: capitalize;
+  color: hsl(205, 78%, 60%);
+  font-size: 1rem;
+  cursor: pointer;
+  padding-left: 0.25rem;
+}

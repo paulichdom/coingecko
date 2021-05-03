@@ -1,6 +1,7 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useCoinApi } from '../shared/CoinApi';
 import { coinDetailURL } from '../shared/URLBuilder';
+import ReactHtmlParser from 'react-html-parser';
 
 import {
   Grid,
@@ -14,6 +15,7 @@ import {
   Header,
   Icon,
   Container,
+  Button,
 } from 'semantic-ui-react';
 
 import ICoinDetails from '../types/ICoinDetails';
@@ -25,6 +27,7 @@ export default function CoinDetails(): ReactElement {
   const { coinId } = useParams<{ coinId: string }>();
   const coinURL = coinDetailURL('coins', coinId).href;
   const coin = useCoinApi<ICoinDetails>('GET', coinURL)[0];
+  const [readMore, setReadMore] = useState(false);
 
   const formatCurrency = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -135,8 +138,8 @@ export default function CoinDetails(): ReactElement {
                 <strong>
                   {coin.market_data.max_supply
                     ? numberFormat.format(
-                      +coin.market_data.max_supply.toFixed(3)
-                    )
+                        +coin.market_data.max_supply.toFixed(3)
+                      )
                     : 'n/a'}
                 </strong>
               </List.Item>
@@ -145,8 +148,8 @@ export default function CoinDetails(): ReactElement {
                 <strong>
                   {coin.market_data.total_supply
                     ? numberFormat.format(
-                      +coin.market_data.total_supply.toFixed(3)
-                    )
+                        +coin.market_data.total_supply.toFixed(3)
+                      )
                     : 'n/a'}
                 </strong>
               </List.Item>
@@ -162,6 +165,24 @@ export default function CoinDetails(): ReactElement {
       </Divider>
       <Container>
         <HistoryChart coinId={coinId} />
+      </Container>
+      <Divider horizontal>
+        <Header as="h4">
+          <Icon name="tag" />
+          Coin Description
+        </Header>
+      </Divider>
+      <Container style={{ textAlign: 'justify' }}>
+        {coin.description && readMore
+          ? ReactHtmlParser(coin.description.en)
+          : coin.description
+          ? ReactHtmlParser(
+              `${coin.description.en.substring(0, 500)} . . .`
+            )
+          : 'Description not available'}
+        <button className="btn" onClick={() => setReadMore(!readMore)}>
+          {readMore ? 'Show less' : 'Read more'}
+        </button>
       </Container>
     </>
   );

@@ -176,13 +176,15 @@ export default function CoinDetails(): ReactElement {
         {coin.description && readMore
           ? ReactHtmlParser(coin.description.en)
           : coin.description
-          ? ReactHtmlParser(
-              `${coin.description.en.substring(0, 500)} . . .`
-            )
+          ? ReactHtmlParser(`${coin.description.en.substring(0, 500)} . . .`)
           : 'Description not available'}
-        <button className="btn" onClick={() => setReadMore(!readMore)}>
-          {readMore ? 'Show less' : 'Read more'}
-        </button>
+        {coin.description.en.length > 500 ? (
+          <button className="btn" onClick={() => setReadMore(!readMore)}>
+            {readMore ? 'Show less' : 'Read more'}
+          </button>
+        ) : (
+          ''
+        )}
       </Container>
     </>
   );

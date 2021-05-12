@@ -10,7 +10,7 @@ export default function Layout(props: Props): ReactElement {
   return (
     <Router>
       <Menu
-        className="ui attached stackable menu "
+        className="ui attached stackable menu"
         id="divide"
         color="teal"
         inverted

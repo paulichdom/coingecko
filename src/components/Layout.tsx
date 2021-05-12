@@ -29,6 +29,7 @@ export default function Layout(props: Props): ReactElement {
         </NavLink>
       </Menu>
       <Container>{props.children}</Container>
+      
     </Router>
   );
 }

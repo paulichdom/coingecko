@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Live [preview](https://decrypto-stats.herokuapp.com) (demo)
+Live [preview](https://coingecko-app.herokuapp.com) (demo)
 
 ## Available Scripts
 

@@ -13,8 +13,6 @@ export default function Home(): ReactElement {
   const [coinsTrending] = useCoinApi<ICoinTrending>('GET', coinsTrendingURL);
   const [index, setIndex] = useState(0);
 
-  console.log(index);
-
   useEffect(() => {
     if (coinsTrending) {
       const lastIndex = coinsTrending?.coins.length - 1;
@@ -64,35 +62,39 @@ export default function Home(): ReactElement {
           </Header>
           <Divider />
           <Segment basic>
-            {coins.map((coin, coinIndex) => {
-              let position = 'nextSlide';
-              if (coinIndex === index) {
-                position = 'activeSlide';
-              }
-              if (
-                coinIndex === index - 1 ||
-                (index === 0 && coinIndex === coins.length - 1)
-              ) {
-                position = 'lastSlide';
-              }
-              return (
-                <article className={position} key={coin.item.id}>
-                  <Link
-                    to={`/coins/${
-                      coins[
-                        index === coins.length
-                          ? 0
-                          : index === -1
-                          ? coins.length - 1
-                          : index
-                      ].item.id
-                    }`}
-                  >
-                    <CoinTrending coin={coin.item} />
-                  </Link>
-                </article>
-              );
-            })}
+            {coins.length ? (
+              coins.map((coin, coinIndex) => {
+                let position = 'nextSlide';
+                if (coinIndex === index) {
+                  position = 'activeSlide';
+                }
+                if (
+                  coinIndex === index - 1 ||
+                  (index === 0 && coinIndex === coins.length - 1)
+                ) {
+                  position = 'lastSlide';
+                }
+                return (
+                  <article className={position} key={coin.item.id}>
+                    <Link
+                      to={`/coins/${
+                        coins[
+                          index === coins.length
+                            ? 0
+                            : index === -1
+                            ? coins.length - 1
+                            : index
+                        ].item.id
+                      }`}
+                    >
+                      <CoinTrending coin={coin.item} />
+                    </Link>
+                  </article>
+                );
+              })
+            ) : (
+              <p>Data currently not available...</p>
+            )}
             <button className="prev" onClick={() => setIndex(index - 1)}>
               <FiChevronLeft />
             </button>

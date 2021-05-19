@@ -39,7 +39,6 @@ export default function CoinListItem(props: Props): ReactElement {
   };
 
   const setWatchlist = useLocalStorage<ICoinListItem[]>('watchlist', [])[1];
-  console.log(store.watchlist);
 
   // handle events
   const toggleWatchlist = () => {
